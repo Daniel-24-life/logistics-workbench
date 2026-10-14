@@ -1,0 +1,7 @@
+# Local static-server and editor artifacts
+__pycache__/
+*.py[cod]
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
