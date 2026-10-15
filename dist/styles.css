@@ -435,6 +435,7 @@ td { font-size: .9375rem; }
 .view-tools { flex-wrap: wrap; white-space: normal; }
 .toast:not(.show) { visibility: hidden; }
 .sidebar button:focus-visible { outline-color: #8be6d3; }
+.sheet-head button:focus-visible { outline-color: #8be6d3; }
 .modal { max-height: 90dvh; overflow: auto; }
 .task-board { align-items: start; }
 .task-board { grid-template-columns: repeat(3, minmax(0,1fr)); overflow: visible; }
