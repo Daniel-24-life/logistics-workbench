@@ -125,6 +125,9 @@ const detailSheet = document.getElementById("detailSheet");
 const sheetBackdrop = document.getElementById("sheetBackdrop");
 const modalBackdrop = document.getElementById("modalBackdrop");
 const editModal = document.getElementById("editModal");
+let detailReturnFocus = null;
+let editReturnFocus = null;
+const appShell = document.querySelector(".app-shell");
 
 function esc(value) {
   return String(value ?? "").replace(/[&<>'"]/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[ch]));
@@ -196,17 +199,11 @@ function renderExceptions() {
       <div><span class="eyebrow">Risk-to-action workspace</span><h1>异常中心</h1><p class="page-subtitle">先处理最接近截止、影响最大且责任不清的异常。所有信息均为虚构脱敏数据。</p></div>
       <div class="page-actions"><button class="button secondary" id="savedView">保存当前视图</button><button class="button primary" id="focusHighRisk">聚焦高风险</button></div>
     </section>
-    <section class="metrics" aria-label="异常指标">
+    <p class="sample-note">样例来源：本页固定虚构记录。摘要仅统计当前演示队列，不代表真实运营绩效。</p>
+    <section class="metrics" aria-label="当前演示队列摘要">
       <article class="metric" style="--metric-color:var(--red)"><span class="metric-label">高风险异常</span><div class="metric-row"><strong class="metric-value" id="metricHigh">0</strong><span class="metric-note">需要立即处理</span></div></article>
       <article class="metric" style="--metric-color:var(--amber)"><span class="metric-label">24小时内到期</span><div class="metric-row"><strong class="metric-value" id="metricDue">0</strong><span class="metric-note">按截止时间排序</span></div></article>
       <article class="metric" style="--metric-color:var(--cyan)"><span class="metric-label">未分配负责人</span><div class="metric-row"><strong class="metric-value" id="metricUnassigned">0</strong><span class="metric-note">责任待明确</span></div></article>
-      <article class="metric" style="--metric-color:var(--green)"><span class="metric-label">本周已关闭</span><div class="metric-row"><strong class="metric-value">31</strong><span class="metric-note">证据完整后关闭</span></div></article>
-    </section>
-    <section class="ops-strip" aria-label="运营质量演示指标">
-      <div class="ops-stat"><span>平均首次响应</span><strong>18 分钟</strong></div>
-      <div class="ops-stat"><span>平均闭环时间</span><strong>3.4 小时</strong></div>
-      <div class="ops-stat"><span>AI 建议采纳率</span><strong>68%</strong></div>
-      <div class="ops-stat"><span>数据过期率</span><strong>4.8% <small class="demo-metric">演示指标</small></strong></div>
     </section>
     <section class="quick-view-bar" aria-label="快捷视图">
       <div class="quick-views">
@@ -295,13 +292,13 @@ function numericImpact(value) {
 function openDetail(id) {
   activeException = exceptions.find(item => item.id === id);
   if (!activeException || !role().canApprove) return;
+  if (detailSheet.getAttribute("aria-hidden") === "true") detailReturnFocus = document.activeElement;
   const item = activeException;
-  const currentStep = lifecycleIndex(item.status);
   const canApprove = LogisticsPolicy.canApprove(role(), item);
   detailSheet.innerHTML = `
     <header class="sheet-head"><div><span class="eyebrow">${esc(item.id)} · ${esc(item.riskLabel)}</span><h2>${esc(item.type)}</h2><p>${esc(item.container)} · ${esc(item.customer)}</p></div><button class="icon-button" data-close-sheet aria-label="关闭详情">×</button></header>
     <div class="sheet-body">
-      <section class="section-card"><div class="section-title"><h3>异常生命周期</h3><span class="tag neutral">${esc(item.status)}</span></div><div class="lifecycle">${lifecycleSteps.map((step,index) => `<div class="lifecycle-step ${index < currentStep ? "done" : index === currentStep ? "current" : ""}">${esc(step)}</div>`).join("")}</div></section>
+      <p class="sample-note">固定合成记录 · 按事实、缺口、建议与审核顺序处理。当前阶段：${esc(item.status)}。</p>
       <section class="detail-grid">
         <div class="detail-stat"><span>提柜港口</span><strong>${esc(item.port)}</strong></div>
         <div class="detail-stat"><span>目的地</span><strong>${esc(item.destination)}</strong></div>
@@ -323,17 +320,25 @@ function openDetail(id) {
   detailSheet.querySelector("[data-reject]").addEventListener("click", () => rejectSuggestion(item));
   sheetBackdrop.hidden = false;
   detailSheet.setAttribute("aria-hidden", "false");
-  requestAnimationFrame(() => detailSheet.classList.add("open"));
+  detailSheet.inert = false;
+  appShell.inert = true;
+  requestAnimationFrame(() => { detailSheet.classList.add("open"); detailSheet.querySelector("[data-close-sheet]").focus(); });
 }
 
 function closeDetail() {
+  const wasOpen = detailSheet.getAttribute("aria-hidden") === "false";
   detailSheet.classList.remove("open");
   detailSheet.setAttribute("aria-hidden", "true");
-  setTimeout(() => { sheetBackdrop.hidden = true; }, 220);
+  detailSheet.inert = true;
+  sheetBackdrop.hidden = true;
+  appShell.inert = false;
+  if (wasOpen && detailReturnFocus?.isConnected) detailReturnFocus.focus();
 }
 
 function openEditModal() {
   if (!activeException) return;
+  editReturnFocus = document.activeElement;
+  detailSheet.inert = true;
   document.getElementById("suggestionText").value = activeException.recommendations.join("\n");
   editModal.hidden = false;
   modalBackdrop.hidden = false;
@@ -341,8 +346,11 @@ function openEditModal() {
 }
 
 function closeEditModal() {
+  const wasOpen = !editModal.hidden;
   editModal.hidden = true;
   modalBackdrop.hidden = true;
+  if (detailSheet.getAttribute("aria-hidden") === "false") detailSheet.inert = false;
+  if (wasOpen && editReturnFocus?.isConnected) editReturnFocus.focus();
 }
 
 function createTaskFromSuggestion(item, suggestion, owner) {
@@ -374,6 +382,7 @@ function renderTasks() {
   root.innerHTML = `
     <section class="page-head"><div><span class="eyebrow">Execution workspace</span><h1>调度任务</h1><p class="page-subtitle">AI 建议只有在进入责任明确的任务、获得执行结果并回写状态后，才产生业务价值。</p></div><div class="page-actions"><button class="button secondary" id="taskFilter">只看高风险</button><button class="button primary" id="newTask">新建任务</button></div></section>
     ${role().canExecute ? `<div class="permission-note">当前角色：${esc(role().label)}。你可以推进任务、提交完成证据并验证回写。</div>` : `<div class="permission-note">当前角色：${esc(role().label)}。任务状态仅供查看；切换为调度人员或运营经理后可执行。</div>`}
+    <p class="sample-note">固定合成任务。证据提交与回写只推进演示状态，不上传或核验真实文件。每列是当前阶段，按钮标明下一动作。</p>
     <section class="task-board">${columns.map(([key,label]) => `<div class="task-column"><div class="task-column-head"><h3>${label}</h3><span>${tasks.filter(t => t.status === key).length} 项</span></div><div>${renderTaskCards(key)}</div></div>`).join("")}</section>`;
   root.querySelectorAll("[data-advance]").forEach(button => button.addEventListener("click", () => advanceTask(button.dataset.advance)));
   document.getElementById("taskFilter").addEventListener("click", () => showToast("高风险任务共 " + tasks.filter(t => t.priority === "high").length + " 项"));
@@ -529,7 +538,7 @@ document.getElementById("saveSuggestion").addEventListener("click", () => {
   if (!suggestion) { showToast("请填写处置方案"); return; }
   createTaskFromSuggestion(activeException, suggestion, owner);
 });
-document.getElementById("refreshButton").addEventListener("click", () => showToast("模拟数据已刷新，最近同步时间已更新"));
+document.getElementById("refreshButton").addEventListener("click", () => showToast("当前为固定演示记录，未请求外部数据"));
 document.getElementById("roleSelect").addEventListener("change", event => {
   closeDetail(); closeEditModal();
   currentRole = event.target.value;
@@ -547,7 +556,19 @@ document.getElementById("densityButton").addEventListener("click", event => {
   event.currentTarget.textContent = tableDensity === "compact" ? "舒适视图" : "紧凑视图";
   showToast(tableDensity === "compact" ? "已切换为紧凑视图" : "已切换为舒适视图");
 });
-document.addEventListener("keydown", event => { if (event.key === "Escape") { closeEditModal(); closeDetail(); } });
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") {
+    if (!editModal.hidden) closeEditModal();
+    else closeDetail();
+  }
+  if (event.key !== "Tab") return;
+  const panel = !editModal.hidden ? editModal : detailSheet.getAttribute("aria-hidden") === "false" ? detailSheet : null;
+  if (!panel) return;
+  const controls = [...panel.querySelectorAll('button:not(:disabled), input, select, textarea, a[href]')].filter(el => el.getClientRects().length);
+  const first = controls[0], last = controls.at(-1);
+  if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+  else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+});
 
 function registerWebMCP() {
   const context = document.modelContext;

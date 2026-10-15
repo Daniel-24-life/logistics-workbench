@@ -21,6 +21,8 @@ python -m http.server 4181 --bind 127.0.0.1 --directory dist
 
 Open <http://127.0.0.1:4181>. Run the dependency-free Node.js 22+ checks with:
 
+Version 1.1 prioritizes the exception queue and presents facts, missing information and recommendations in review order. Dialogs support Tab, Shift+Tab, layered Escape and focus return. This remains a local-only demo. See [UI audit](docs/UI_AUDIT.md) and [UI QA](docs/UI_QA.md) (Chinese).
+
 ```powershell
 node --test tests/policy.test.cjs
 node --check dist/app.js

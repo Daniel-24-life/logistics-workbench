@@ -54,7 +54,7 @@
       <div class="sidebar-foot">
         <div class="system-state">
           <span class="pulse-dot"></span>
-          <div><strong>模拟数据通道</strong><span>最近同步 2 分钟前</span></div>
+          <div><strong>固定演示记录</strong><span>不连接真实数据源</span></div>
         </div>
         <div class="demo-label">公开离线演示 · 全部记录虚构</div>
       </div>
@@ -65,7 +65,7 @@
         <div class="mobile-brand"><strong>航序</strong><span>AI Logistics</span></div>
         <div class="breadcrumb" id="breadcrumb">运营工作台 / 异常中心</div>
         <div class="top-actions">
-          <span class="environment-badge"><i></i>DEMO · V3</span>
+          <span class="environment-badge"><i></i>离线演示 · v1.1</span>
           <button class="density-control" id="densityButton" type="button" aria-pressed="false">紧凑视图</button>
           <button class="icon-button" id="refreshButton" title="刷新模拟数据" aria-label="刷新模拟数据">↻</button>
           <label class="role-switch"><span>当前角色</span><select id="roleSelect">
@@ -87,7 +87,7 @@
   </div>
 
   <div class="sheet-backdrop" id="sheetBackdrop" hidden></div>
-  <aside class="detail-sheet" id="detailSheet" aria-label="异常详情" aria-hidden="true"></aside>
+  <aside class="detail-sheet" id="detailSheet" role="dialog" aria-modal="true" aria-label="异常详情" aria-hidden="true" inert></aside>
 
   <div class="modal-backdrop" id="modalBackdrop" hidden></div>
   <section class="modal" id="editModal" role="dialog" aria-modal="true" aria-labelledby="editModalTitle" hidden>

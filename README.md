@@ -21,6 +21,10 @@ python -m http.server 4181 --bind 127.0.0.1 --directory dist
 
 然后打开 <http://127.0.0.1:4181>。
 
+v1.1 将异常队列作为主区域，详情按事实、缺口和建议展开。编辑窗口支持 Tab、Shift+Tab 与 Escape，关闭后返回触发控件。仅提供本地运行，不新增在线托管。
+
+[界面审查](docs/UI_AUDIT.md) · [本轮界面验证](docs/UI_QA.md)
+
 运行 Node.js 22+ 的无依赖策略测试：
 
 ```powershell
