@@ -87,7 +87,6 @@ const roles = {
   customer: { label: "客户用户", name: "客户访客", canApprove: false, canExecute: false, view: "external" }
 };
 
-const lifecycleSteps = ["新发现", "待确认", "待审核", "已创建任务", "处理中", "待验证", "已关闭"];
 const auditLog = [
   { time: "09:12", actor: "规则引擎", action: "识别 LFD 临期且未预约，创建高风险异常" },
   { time: "09:14", actor: "AI Copilot", action: "生成处置建议，置信度 87%" },
@@ -162,11 +161,6 @@ function role() {
 function logAudit(actor, action) {
   const now = new Date();
   auditLog.unshift({ time: `${String(now.getHours()).padStart(2,"0")}:${String(now.getMinutes()).padStart(2,"0")}`, actor, action });
-}
-
-function lifecycleIndex(status) {
-  const map = { "待处理":1, "观察中":1, "待补证":1, "待审核":2, "待人工复核":2, "已指派":3, "已创建任务":3, "处理中":4, "待验证":5, "已关闭":6 };
-  return map[status] ?? 0;
 }
 
 function setView(view) {

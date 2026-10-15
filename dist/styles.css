@@ -14,7 +14,7 @@
   --surface-3: #eef3f7;
   --cyan: #12685f;
   --cyan-soft: #dff6f4;
-  --amber: #d68316;
+  --amber: #94560c;
   --amber-soft: #fff2d8;
   --red: #c4473d;
   --red-soft: #fde9e6;
@@ -433,6 +433,8 @@ td { font-size: .9375rem; }
 .fact-list li, .missing-list li, .section-title, .task-card { overflow-wrap: anywhere; }
 .ai-actions { flex-wrap: wrap; }
 .view-tools { flex-wrap: wrap; white-space: normal; }
+.toast:not(.show) { visibility: hidden; }
+.sidebar button:focus-visible { outline-color: #8be6d3; }
 .modal { max-height: 90dvh; overflow: auto; }
 .task-board { align-items: start; }
 .task-board { grid-template-columns: repeat(3, minmax(0,1fr)); overflow: visible; }
