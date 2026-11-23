@@ -1,5 +1,9 @@
 # Changelog
 
+## Mobile layout repair
+
+- Keep the page inside narrow viewports and show field names in the mobile integration mapping cards.
+
 ## 2026-11-23
 
 - Added light and dark covers for exception review and dispatch handoffs.

@@ -29,7 +29,7 @@
 }
 
 * { box-sizing: border-box; }
-html { min-width: 320px; background: var(--surface-2); }
+html { background: var(--surface-2); }
 body { margin: 0; color: var(--ink-900); background: var(--surface-2); font-size: 16px; line-height: 1.5; }
 button, input, select, textarea { font: inherit; }
 button { cursor: pointer; }
@@ -466,6 +466,11 @@ td { font-size: .9375rem; }
   .fact-list li, .missing-list li, .section-title { flex-wrap: wrap; }
   td { flex-wrap: wrap; }
   td::before { font-size: .875rem; }
+  .mapping-table table { min-width: 0; }
+  .mapping-table td { align-items: baseline; }
+  .mapping-table td:last-child { justify-content: space-between; }
+  .mapping-table td:last-child::before { display: block; }
+  .mapping-table td code { overflow-wrap: anywhere; }
   .lifecycle { flex-wrap: wrap; }
   .sheet-head h2 { font-size: 1.25rem; }
   .toast { bottom: 16px; }
