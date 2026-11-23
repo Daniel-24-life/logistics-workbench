@@ -1,11 +1,12 @@
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/cover-dark.svg" />
-  <img src="docs/assets/cover-light.svg" alt="logistics-workbench" width="1280" />
+  <source media="(prefers-color-scheme: dark)" srcset="docs/cover-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="docs/cover-light.svg">
+  <img src="docs/cover-light.svg" alt="Project overview" width="1280">
 </picture>
 
 # 航序 · 跨境物流 AI 运营协同工作台
 
-[完整作品目录](https://github.com/Daniel-24-life/AIfile)
+[完整作品目录](https://github.com/Daniel-24-life/portfolio)
 
 一个可独立运行的公开产品演示：以虚构跨境物流记录串联异常识别、固定 AI 建议、人工审核、调度任务与客户状态视图。
 
@@ -64,11 +65,11 @@ node --check dist/policy.js
 | [docs/SOURCE_READING_GUIDE.md](docs/SOURCE_READING_GUIDE.md) | 公开来源与阅读顺序。 |
 | [MIGRATION.md](MIGRATION.md) | 公开迁移来源与范围。 |
 
-原始作品集上下文位于 [AIfile](https://github.com/Daniel-24-life/AIfile)。
+原始作品集上下文位于 [AIfile](https://github.com/Daniel-24-life/portfolio)。
 
 ## 文档
 
-- [English README](README.en.md)
+- [English README](README.md)
 - [参考指南](docs/reference-guide.md)
 - [架构说明](docs/architecture.md)
 - [源码阅读指南](docs/SOURCE_READING_GUIDE.md)

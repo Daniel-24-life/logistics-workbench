@@ -1,8 +1,14 @@
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/cover-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="docs/cover-light.svg">
+  <img src="docs/cover-light.svg" alt="Project overview" width="1280">
+</picture>
+
 # Hangxu Logistics Workbench
 
 An offline browser workbench for reviewing synthetic logistics exceptions and following a dispatch task through closure.
 
-[中文说明](README.zh.md) · [Portfolio](https://github.com/Daniel-24-life/AIfile)
+[中文说明](README.zh.md) · [Portfolio](https://github.com/Daniel-24-life/portfolio)
 
 ![Logistics workbench exception queue and task details](docs/assets/workbench-desktop.png)
 
