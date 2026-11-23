@@ -3,6 +3,7 @@
 ## Mobile layout repair
 
 - Keep the page inside narrow viewports and show field names in the mobile integration mapping cards.
+- Fit the exception detail panel when the browser reserves space for a scrollbar.
 
 ## 2026-11-23
 

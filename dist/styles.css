@@ -425,7 +425,7 @@ h3 { font-size: 1rem; }
 .mode-card span, .summary-card span, .reset-zone p, .health-line { font-size: .875rem; }
 td { font-size: .9375rem; }
 .role-switch select { width: 132px; }
-.detail-sheet { width: min(760px, 100vw); box-shadow: -8px 0 30px #10253622; }
+.detail-sheet { width: min(760px, 100%); box-shadow: -8px 0 30px #10253622; }
 .detail-sheet[aria-hidden="true"] { display: none; }
 .sheet-head { position: static; }
 .sheet-head p { color: #c0d2df; }
